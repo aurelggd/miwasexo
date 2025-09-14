@@ -1,0 +1,745 @@
+/* Design moderne pour la modal de connexion administrateur - Miwasexo */
+
+/* Variables CSS - Cohérentes avec le système principal */
+:root {
+  /* 🎨 PALETTE DE COULEURS BÉNINOISE MODERNE */
+  
+  /* Couleurs principales du drapeau béninois */
+  --green-primary: #00B04F;     /* Vert moderne et vibrant */
+  --green-light: #00D65A;       /* Vert clair lumineux */
+  --green-dark: #008A3D;        /* Vert foncé élégant */
+  --green-soft: #E8F5E8;        /* Vert très clair pour fond */
+  
+  --yellow-primary: #FFD700;    /* Jaune doré brillant */
+  --yellow-light: #FFF176;      /* Jaune clair chaleureux */
+  --yellow-dark: #F57F17;       /* Jaune foncé riche */
+  --yellow-soft: #FFFDE7;       /* Jaune très clair pour fond */
+  
+  --red-primary: #E53E3E;       /* Rouge moderne et vif */
+  --red-light: #FC8181;         /* Rouge clair doux */
+  --red-dark: #C53030;          /* Rouge foncé profond */
+  --red-soft: #FED7D7;          /* Rouge très clair pour fond */
+  
+  /* Couleurs principales pour compatibilité */
+  --primary-color: var(--green-primary);
+  --primary-light: var(--green-light);
+  --primary-dark: var(--green-dark);
+  --secondary-color: var(--yellow-primary);
+  --secondary-light: var(--yellow-light);
+  --secondary-dark: var(--yellow-dark);
+  --accent-color: var(--red-primary);
+  --accent-light: var(--red-light);
+  --accent-dark: var(--red-dark);
+
+  /* Couleurs neutres modernes */
+  --white: #FFFFFF;             /* Blanc pur */
+  --black: #1A202C;             /* Noir moderne (pas trop dur) */
+  --gray-50: #F7FAFC;           /* Gris très clair */
+  --gray-100: #EDF2F7;          /* Gris clair */
+  --gray-200: #E2E8F0;          /* Gris moyen-clair */
+  --gray-300: #CBD5E0;          /* Gris moyen */
+  --gray-400: #A0AEC0;          /* Gris moyen-foncé */
+  --gray-500: #718096;          /* Gris foncé */
+  --gray-600: #4A5568;          /* Gris très foncé */
+  --gray-700: #2D3748;          /* Gris presque noir */
+  --gray-800: #1A202C;          /* Gris noir */
+  --gray-900: #171923;          /* Noir profond */
+
+  /* Couleurs de texte harmonieuses */
+  --text-primary: #2D3748;      /* Texte principal */
+  --text-secondary: #4A5568;    /* Texte secondaire */
+  --text-muted: #718096;        /* Texte atténué */
+  --text-light: #A0AEC0;        /* Texte clair */
+  --text-white: #FFFFFF;        /* Texte blanc */
+
+  /* Couleurs d'état basées sur la palette */
+  --success-color: var(--green-primary);
+  --success-light: var(--green-light);
+  --success-dark: var(--green-dark);
+  --success-bg: var(--green-soft);
+  
+  --warning-color: var(--yellow-primary);
+  --warning-light: var(--yellow-light);
+  --warning-dark: var(--yellow-dark);
+  --warning-bg: var(--yellow-soft);
+  
+  --error-color: var(--red-primary);
+  --error-light: var(--red-light);
+  --error-dark: var(--red-dark);
+  --error-bg: var(--red-soft);
+  
+  --info-color: #3182CE;        /* Bleu moderne pour info */
+  --info-light: #63B3ED;
+  --info-dark: #2C5282;
+  --info-bg: #EBF8FF;
+
+  /* Couleurs d'arrière-plan */
+  --bg-primary: var(--white);
+  --bg-secondary: var(--gray-50);
+  --bg-tertiary: var(--gray-100);
+  --bg-dark: var(--gray-800);
+  --bg-overlay: rgba(26, 32, 44, 0.6);
+
+  /* Bordures harmonieuses */
+  --border-color: var(--gray-200);
+  --border-color-light: var(--gray-100);
+  --border-color-dark: var(--gray-300);
+  --border-radius: 12px;
+  --border-radius-sm: 6px;
+  --border-radius-md: 12px;
+  --border-radius-lg: 16px;
+  --border-radius-xl: 20px;
+  --border-radius-full: 9999px;
+
+  /* Ombres élégantes */
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+
+  /* Transitions */
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-fast: all 0.15s ease;
+  --transition-slow: all 0.5s ease;
+
+  /* Dégradés magnifiques */
+  --gradient-green: linear-gradient(135deg, var(--green-primary) 0%, var(--green-light) 100%);
+  --gradient-yellow: linear-gradient(135deg, var(--yellow-primary) 0%, var(--yellow-light) 100%);
+  --gradient-red: linear-gradient(135deg, var(--red-primary) 0%, var(--red-light) 100%);
+  --gradient-benin: linear-gradient(135deg, var(--green-primary) 0%, var(--yellow-primary) 50%, var(--red-primary) 100%);
+  --gradient-warm: linear-gradient(135deg, var(--yellow-primary) 0%, var(--red-primary) 100%);
+  --gradient-cool: linear-gradient(135deg, var(--green-primary) 0%, var(--info-color) 100%);
+  
+  /* Dégradés principaux pour compatibilité */
+  --gradient-primary: var(--gradient-green);
+  --gradient-secondary: var(--gradient-yellow);
+  --gradient-accent: var(--gradient-red);
+  --gradient-success: var(--gradient-green);
+  --gradient-error: var(--gradient-red);
+}
+
+/* Reset et base */
+* {
+  box-sizing: border-box;
+}
+
+/* Modal de connexion admin */
+.admin-login-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.admin-login-content {
+  background: var(--white);
+  border-radius: var(--border-radius-xl);
+  box-shadow: var(--shadow-xl);
+  max-width: 450px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: slideUp 0.4s ease-out;
+  border: 1px solid rgba(0, 135, 81, 0.1);
+  position: relative;
+}
+
+/* Header moderne */
+.admin-login-header {
+  background: var(--gradient-primary);
+  color: var(--white);
+  padding: 40px 30px 30px;
+  border-radius: var(--border-radius-xl) var(--border-radius-xl) 0 0;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+
+.admin-login-header::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23dots)"/></svg>');
+  opacity: 0.3;
+}
+
+.close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: var(--white);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  z-index: 2;
+}
+
+.close-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+.admin-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  position: relative;
+  z-index: 1;
+}
+
+.admin-logo-img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  background: var(--white);
+  padding: 8px;
+  box-shadow: var(--shadow-md);
+}
+
+.admin-logo-text h1 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.admin-logo-text span {
+  font-size: 0.9rem;
+  opacity: 0.9;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 5px;
+}
+
+/* Body moderne */
+.admin-login-body {
+  padding: 40px 30px 30px;
+}
+
+/* Section de bienvenue */
+.login-welcome {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.security-badge {
+  width: 70px;
+  height: 70px;
+  background: var(--gradient-primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  box-shadow: var(--shadow-md);
+  position: relative;
+}
+
+.security-badge::before {
+  content: "";
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  background: var(--gradient-primary);
+  border-radius: 50%;
+  opacity: 0.3;
+  animation: pulse 2s infinite;
+}
+
+.security-badge i {
+  font-size: 1.8rem;
+  color: var(--white);
+  z-index: 1;
+}
+
+.login-welcome h2 {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 8px;
+}
+
+.login-welcome p {
+  color: var(--text-light);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  max-width: 280px;
+  margin: 0 auto;
+}
+
+/* Formulaire moderne */
+.admin-login-form {
+  margin-bottom: 30px;
+}
+
+.form-group {
+  margin-bottom: 24px;
+  position: relative;
+}
+
+.form-label {
+  display: block;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.input-wrapper {
+  position: relative;
+}
+
+/* Styles des inputs modernes */
+.form-input {
+  width: 100%;
+  padding: 16px 20px;
+  border: 2px solid var(--border-color);
+  border-radius: var(--border-radius-md);
+  font-size: 16px;
+  font-weight: 400;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  transition: var(--transition);
+  outline: none;
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  font-family: inherit;
+}
+
+.form-input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(0, 135, 81, 0.1), var(--shadow-md);
+  transform: translateY(-1px);
+  background: var(--bg-primary);
+}
+
+.form-input:hover:not(:focus) {
+  border-color: var(--border-color-dark);
+  box-shadow: var(--shadow);
+}
+
+.form-input::placeholder {
+  color: var(--text-muted);
+  font-weight: 400;
+  opacity: 0.8;
+}
+
+.form-input:disabled {
+  background: var(--bg-secondary);
+  color: var(--text-muted);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* États de validation */
+.form-input:valid:not(:placeholder-shown) {
+  border-color: var(--success-color);
+  background: rgba(16, 185, 129, 0.05);
+}
+
+.form-input:invalid:not(:placeholder-shown):not(:focus) {
+  border-color: var(--error-color);
+  background: rgba(239, 68, 68, 0.05);
+}
+
+/* Input avec icône */
+.input-with-icon {
+  position: relative;
+}
+
+.input-with-icon .form-input {
+  padding-right: 50px;
+}
+
+/* Icônes dans les champs */
+.input-icon {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-light);
+  font-size: 1.1rem;
+  pointer-events: none;
+}
+
+/* Toggle password */
+.password-toggle {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--text-light);
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 4px;
+  transition: var(--transition);
+  z-index: 2;
+}
+
+.password-toggle:hover {
+  color: var(--primary-color);
+  background: rgba(0, 135, 81, 0.1);
+}
+
+/* Message d'erreur moderne */
+.login-error {
+  background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+  border: 1px solid #fecaca;
+  color: var(--error-color);
+  padding: 16px 20px;
+  border-radius: var(--border-radius);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  animation: shake 0.5s ease-in-out;
+  box-shadow: var(--shadow-sm);
+}
+
+.login-error i {
+  font-size: 1.2rem;
+  color: var(--error-color);
+}
+
+.error-text {
+  flex: 1;
+  line-height: 1.4;
+}
+
+/* Actions du formulaire */
+.form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+/* Boutons de connexion modernes */
+.btn-cancel,
+.btn-login {
+  flex: 1;
+  padding: 16px 24px;
+  border: none;
+  border-radius: var(--border-radius-md);
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  position: relative;
+  overflow: hidden;
+  text-transform: none;
+  letter-spacing: 0.25px;
+  min-height: 48px;
+}
+
+.btn-cancel {
+  background: var(--bg-secondary);
+  color: var(--text-secondary) !important;
+  border: 2px solid var(--border-color);
+  margin-right: 12px;
+  font-weight: 600;
+}
+
+.btn-cancel:hover {
+  background: var(--bg-tertiary);
+  color: var(--text-primary) !important;
+  border-color: var(--border-color-dark);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-cancel:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-login {
+  background: var(--gradient-primary);
+  color: var(--text-white) !important;
+  box-shadow: var(--shadow-md);
+  border: 2px solid transparent;
+  font-weight: 700;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.btn-login:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-lg);
+  background: var(--primary-dark);
+  color: var(--text-white) !important;
+}
+
+.btn-login:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-login:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  background: var(--gray-400);
+  color: var(--gray-600);
+}
+
+.btn-login:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+/* État de chargement */
+.btn-loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: none;
+}
+
+.btn-login.loading .btn-loading {
+  display: block;
+}
+
+.btn-login.loading span {
+  opacity: 0;
+}
+
+/* Informations de sécurité */
+.login-security-info {
+  background: linear-gradient(135deg, var(--light-gray) 0%, #f1f3f4 100%);
+  border-radius: var(--border-radius);
+  padding: 20px;
+  border-left: 4px solid var(--primary-color);
+  margin-top: 20px;
+}
+
+.security-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  font-size: 0.85rem;
+  color: var(--text-dark);
+}
+
+.security-item:last-child {
+  margin-bottom: 0;
+}
+
+.security-item i {
+  color: var(--primary-color);
+  font-size: 1rem;
+  width: 16px;
+  text-align: center;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.1;
+  }
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+}
+
+/* États de validation */
+.form-input:valid {
+  border-color: var(--success-color);
+}
+
+.form-input:invalid:not(:placeholder-shown) {
+  border-color: var(--error-color);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .admin-login-modal {
+    padding: 15px;
+  }
+
+  .admin-login-content {
+    max-width: 100%;
+  }
+
+  .admin-login-header {
+    padding: 30px 20px 25px;
+  }
+
+  .admin-login-body {
+    padding: 30px 20px 25px;
+  }
+
+  .admin-logo-img {
+    width: 50px;
+    height: 50px;
+  }
+
+  .admin-logo-text h1 {
+    font-size: 1.8rem;
+  }
+
+  .login-welcome h2 {
+    font-size: 1.4rem;
+  }
+
+  .form-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .btn-cancel,
+  .btn-login {
+    padding: 18px 20px;
+    min-height: 52px;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-login-header {
+    padding: 25px 15px 20px;
+  }
+
+  .admin-login-body {
+    padding: 25px 15px 20px;
+  }
+
+  .security-badge {
+    width: 60px;
+    height: 60px;
+  }
+
+  .security-badge i {
+    font-size: 1.5rem;
+  }
+
+  .login-welcome h2 {
+    font-size: 1.3rem;
+  }
+
+  .form-input {
+    padding: 14px 16px;
+  }
+}
+
+/* Mode sombre */
+@media (prefers-color-scheme: dark) {
+  .admin-login-content {
+    background: #1a1a1a;
+    border-color: rgba(0, 135, 81, 0.2);
+  }
+
+  .admin-login-body {
+    color: #e0e0e0;
+  }
+
+  .login-welcome h2 {
+    color: #e0e0e0;
+  }
+
+  .form-label {
+    color: #e0e0e0;
+  }
+
+  .form-input {
+    background: #2a2a2a;
+    border-color: #404040;
+    color: #e0e0e0;
+  }
+
+  .form-input:focus {
+    border-color: var(--primary-color);
+    background: #2a2a2a;
+  }
+
+  .login-security-info {
+    background: linear-gradient(135deg, #2a2a2a 0%, #333 100%);
+    border-color: var(--primary-color);
+  }
+
+  .security-item {
+    color: #e0e0e0;
+  }
+
+  .btn-cancel {
+    background: #2a2a2a;
+    color: #e0e0e0;
+    border-color: #404040;
+  }
+
+  .btn-cancel:hover {
+    background: #333;
+  }
+}

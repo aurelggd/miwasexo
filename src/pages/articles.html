@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Articles - Miwasexo</title>
+    <meta name="description" content="Décryptages et analyses de l'actualité politique, économique et financière du Bénin par Miwasexo">
+    <meta name="keywords" content="articles, actualité, politique, économie, finance, Bénin, décryptage, analyse">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://miwasexo.com/articles.html">
+    <meta property="og:title" content="Articles - Miwasexo">
+    <meta property="og:description" content="Décryptages et analyses de l'actualité politique, économique et financière du Bénin">
+    <meta property="og:image" content="https://miwasexo.com/assets/images/logo.png">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="../assets/images/logo.png">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <link rel="stylesheet" href="../assets/css/article-styles.css">
+    <link rel="stylesheet" href="../assets/css/admin-login-styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- PWA -->
+    <link rel="manifest" href="../config/manifest.json">
+    <meta name="theme-color" content="#fcd116">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Miwasexo Articles">
+    <link rel="apple-touch-icon" href="../assets/images/logo.png">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html">
+                    <img src="../assets/images/logo.png" alt="Miwasexo" class="logo-img">
+                </a>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">Accueil</a>
+                </li>
+                <li class="nav-item">
+                    <a href="articles.html" class="nav-link active">Articles</a>
+                </li>
+                <li class="nav-item">
+                    <a href="index.html#about" class="nav-link">À propos</a>
+                </li>
+                <li class="nav-item">
+                    <a href="index.html#contact" class="nav-link">Contact</a>
+                </li>
+                <li class="nav-item admin-nav">
+                    <a href="admin.html" class="nav-link admin-link" onclick="return handleAdminClick(event)" data-action="admin-login" data-prevent-delete="true">
+                        <i class="fas fa-cog"></i> Admin
+                    </a>
+                </li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Section Hero Articles -->
+    <section class="articles-hero">
+        <div class="container">
+            <div class="articles-hero-content">
+                <h1 class="articles-hero-title">
+                    <i class="fas fa-newspaper"></i>
+                    Nos Décryptages
+                </h1>
+                <p class="articles-hero-subtitle">
+                    Analyses approfondies de l'actualité politique, économique et financière du Bénin
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Articles -->
+    <section class="articles-section">
+        <div class="container">
+            <div class="articles-header">
+                <h2 class="section-title">Derniers Articles</h2>
+                <div class="articles-stats">
+                    <span class="articles-count">
+                        <i class="fas fa-file-alt"></i>
+                        <span id="total-articles">0</span> articles
+                    </span>
+                    <!-- Bouton Admin pour utilisateurs connectés -->
+                    <div id="admin-button-container" style="display: none;">
+                        <a href="admin.html" class="admin-button" onclick="return handleAdminClick(event)">
+                            <i class="fas fa-cog"></i>
+                            Administration
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Conteneur des articles -->
+            <div class="articles-grid" id="articles-container">
+                <!-- Articles will be loaded dynamically here -->
+            </div>
+
+            <!-- Animation pour articles vides -->
+            <div id="no-articles-animation" class="no-articles-container" style="display: none;">
+                <div class="no-articles-content">
+                    <div class="no-articles-icon">
+                        <i class="fas fa-newspaper"></i>
+                    </div>
+                    <h3 class="no-articles-title">Articles bientôt disponibles</h3>
+                    <p class="no-articles-description">
+                        Notre équipe d'analystes prépare actuellement des décryptages exclusifs de l'actualité politique, économique et financière du Bénin.
+                    </p>
+                    <div class="no-articles-animation">
+                        <div class="pulse-dot"></div>
+                        <div class="pulse-dot"></div>
+                        <div class="pulse-dot"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Newsletter -->
+    <section class="newsletter-section">
+        <div class="container">
+            <div class="newsletter-content">
+                <h2 class="newsletter-title">Restez informés</h2>
+                <p class="newsletter-description">
+                    Recevez nos analyses directement par email et ne manquez aucun décryptage de l'actualité.
+                </p>
+                <form class="newsletter-form">
+                    <div class="form-group">
+                        <input type="email" placeholder="Votre adresse email" required>
+                        <button type="submit" class="subscribe-btn">S'abonner</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <div class="footer-logo-img">
+                        <img src="../assets/images/logo.png" alt="Miwasexo" class="footer-logo-image">
+                    </div>
+                    <p>Décryptage de l'actualité politique, économique et financière</p>
+                </div>
+                <div class="footer-links">
+                    <a href="index.html">Accueil</a>
+                    <a href="articles.html">Articles</a>
+                    <a href="index.html#about">À propos</a>
+                    <a href="index.html#contact">Contact</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Miwasexo. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login Modal pour la page articles -->
+    <div id="login-modal" class="admin-login-modal" style="display: none;">
+        <div class="admin-login-content">
+            <div class="admin-login-header">
+                <button class="close-btn" onclick="hideLoginModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+                <div class="admin-logo">
+                    <img src="../assets/images/logo.png" alt="Miwasexo" class="admin-logo-img">
+                    <div class="admin-logo-text">
+                        <h1>Miwasexo</h1>
+                        <span>Administration</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="admin-login-body">
+                <div class="login-welcome">
+                    <div class="security-badge">
+                        <i class="fas fa-shield-check"></i>
+                    </div>
+                    <h2>Connexion Sécurisée</h2>
+                    <p>Accédez au panneau d'administration avec vos identifiants autorisés</p>
+                </div>
+                
+                <form id="login-form" class="admin-login-form" onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label for="login-username" class="form-label">Nom d'utilisateur</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="login-username" name="username" required 
+                                   placeholder="Saisissez votre nom d'utilisateur"
+                                   class="form-input">
+                            <div class="input-icon">
+                                <i class="fas fa-user"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="login-password" class="form-label">Mot de passe</label>
+                        <div class="input-wrapper">
+                            <input type="password" id="login-password" name="password" required 
+                                   placeholder="Saisissez votre mot de passe"
+                                   class="form-input">
+                            <button type="button" class="password-toggle" onclick="togglePassword()">
+                                <i class="fas fa-eye" id="password-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="login-error" class="login-error" style="display: none;">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span class="error-text"></span>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn-cancel" onclick="hideLoginModal()">
+                            <i class="fas fa-times"></i>
+                            Annuler
+                        </button>
+                        <button type="submit" class="btn-login">
+                            <i class="fas fa-sign-in-alt"></i>
+                            <span>Se connecter</span>
+                            <div class="btn-loading" style="display: none;">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </div>
+                        </button>
+                    </div>
+                </form>
+                
+                <div class="login-security-info">
+                    <div class="security-item">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Connexion sécurisée SSL</span>
+                    </div>
+                    <div class="security-item">
+                        <i class="fas fa-user-shield"></i>
+                        <span>Accès réservé aux administrateurs</span>
+                    </div>
+                    <div class="security-item">
+                        <i class="fas fa-clock"></i>
+                        <span>Session limitée dans le temps</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../assets/js/config.js"></script>
+    <script src="../assets/js/data-manager.js"></script>
+    <script src="../assets/js/auth.js"></script>
+    <script src="../assets/js/script.js"></script>
+    <script src="../assets/js/articles-page.js"></script>
+</body>
+</html>
