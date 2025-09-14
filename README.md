@@ -43,6 +43,15 @@ Miwasexo est une plateforme d'information moderne dédiée au décryptage de l'a
 - **Validation** : Validation stricte des données d'entrée
 - **localStorage sécurisé** : Gestion des données côté client
 
+### 📱 Mobile-First
+
+- **Design responsive** : Optimisé pour tous les appareils
+- **Interface tactile** : Zones de clic de 44px minimum
+- **Navigation mobile** : Menu hamburger avec gestes tactiles
+- **Modales optimisées** : Pleine largeur sur mobile
+- **Tableaux adaptatifs** : Conversion automatique en cartes
+- **Performance mobile** : Chargement rapide et fluide
+
 ## 🚀 Installation
 
 ### Prérequis
@@ -91,6 +100,7 @@ miwasexo/
 │   ├── assets/             # Ressources statiques
 │   │   ├── css/            # Feuilles de style
 │   │   │   ├── styles.css              # Styles principaux
+│   │   │   ├── mobile-responsive.css   # Styles responsive mobile
 │   │   │   ├── admin-styles.css        # Styles administration
 │   │   │   ├── article-styles.css      # Styles articles
 │   │   │   ├── modal-styles.css        # Styles modales
@@ -112,6 +122,7 @@ miwasexo/
 ├── docs/                   # Documentation
 │   ├── README.md           # Documentation technique
 │   └── DATA_ORGANIZATION.md # Organisation des données
+├── RESPONSIVE_TEST.md      # Guide de test responsive
 └── .gitignore              # Fichiers à ignorer pour Git
 ```
 

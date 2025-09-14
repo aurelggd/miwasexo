@@ -1,17 +1,87 @@
-// Navigation mobile
+// Navigation mobile améliorée
 const hamburger = document.querySelector('.hamburger');
 const navMenu = document.querySelector('.nav-menu');
+const body = document.body;
 
-hamburger.addEventListener('click', () => {
+// Fonction pour ouvrir/fermer le menu mobile
+function toggleMobileMenu() {
+    const isActive = hamburger.classList.contains('active');
+    
     hamburger.classList.toggle('active');
     navMenu.classList.toggle('active');
-});
+    
+    // Empêcher le scroll du body quand le menu est ouvert
+    if (!isActive) {
+        body.classList.add('no-scroll');
+        // Empêcher le scroll sur iOS
+        document.addEventListener('touchmove', preventScroll, { passive: false });
+    } else {
+        body.classList.remove('no-scroll');
+        document.removeEventListener('touchmove', preventScroll);
+    }
+}
 
-// Fermer le menu mobile quand on clique sur un lien
-document.querySelectorAll('.nav-link').forEach(n => n.addEventListener('click', () => {
-    hamburger.classList.remove('active');
-    navMenu.classList.remove('active');
-}));
+// Fonction pour empêcher le scroll
+function preventScroll(e) {
+    e.preventDefault();
+}
+
+// Event listeners pour le menu mobile
+if (hamburger && navMenu) {
+    hamburger.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleMobileMenu();
+    });
+    
+    // Fermer le menu en cliquant à l'extérieur
+    document.addEventListener('click', (e) => {
+        if (navMenu.classList.contains('active') && 
+            !navMenu.contains(e.target) && 
+            !hamburger.contains(e.target)) {
+            toggleMobileMenu();
+        }
+    });
+    
+    // Fermer le menu avec la touche Escape
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && navMenu.classList.contains('active')) {
+            toggleMobileMenu();
+        }
+    });
+    
+    // Fermer le menu mobile quand on clique sur un lien
+    document.querySelectorAll('.nav-link').forEach(n => n.addEventListener('click', () => {
+        if (navMenu.classList.contains('active')) {
+            toggleMobileMenu();
+        }
+    }));
+    
+    // Gestion des gestes tactiles pour fermer le menu
+    let startX = 0;
+    let startY = 0;
+    
+    navMenu.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+    });
+    
+    navMenu.addEventListener('touchmove', (e) => {
+        if (!navMenu.classList.contains('active')) return;
+        
+        const currentX = e.touches[0].clientX;
+        const currentY = e.touches[0].clientY;
+        const diffX = startX - currentX;
+        const diffY = startY - currentY;
+        
+        // Si le swipe horizontal est plus important que le vertical
+        if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50) {
+            if (diffX > 0) { // Swipe vers la gauche
+                toggleMobileMenu();
+            }
+        }
+    });
+}
 
 // Fonction globale pour gérer le clic sur Admin
 function handleAdminClick(event) {

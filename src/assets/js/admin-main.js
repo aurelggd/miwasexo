@@ -23,6 +23,9 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Écouter les changements de données
     setupDataListeners();
+    
+    // Initialiser les fonctionnalités mobiles
+    initializeMobileFeatures();
 });
 
 // Fonction de prévisualisation d'image
@@ -1632,3 +1635,211 @@ window.showCategorySettings = showCategorySettings;
 window.showMediaSettings = showMediaSettings;
 window.exportAllData = exportAllData;
 window.importData = importData;
+
+// ===== FONCTIONNALITÉS MOBILES =====
+
+// Fonction pour initialiser les fonctionnalités mobiles
+function initializeMobileFeatures() {
+    console.log('📱 Initialisation des fonctionnalités mobiles pour l\'admin');
+    
+    // Gestion du menu mobile pour l'admin
+    const hamburger = document.querySelector('.hamburger');
+    const navMenu = document.querySelector('.nav-menu');
+    
+    if (hamburger && navMenu) {
+        hamburger.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            toggleMobileMenu();
+        });
+        
+        // Fermer le menu en cliquant à l'extérieur
+        document.addEventListener('click', (e) => {
+            if (navMenu.classList.contains('active') && 
+                !navMenu.contains(e.target) && 
+                !hamburger.contains(e.target)) {
+                toggleMobileMenu();
+            }
+        });
+    }
+    
+    // Améliorer les interactions tactiles pour les boutons
+    document.querySelectorAll('.btn').forEach(btn => {
+        btn.addEventListener('touchstart', function() {
+            this.style.transform = 'scale(0.98)';
+        });
+        
+        btn.addEventListener('touchend', function() {
+            this.style.transform = '';
+        });
+    });
+    
+    // Optimiser les modales pour mobile
+    optimizeModalsForMobile();
+    
+    // Gestion du scroll pour les tableaux
+    optimizeTablesForMobile();
+    
+    // Optimiser les onglets pour mobile
+    optimizeTabsForMobile();
+}
+
+// Fonction pour optimiser les modales pour mobile
+function optimizeModalsForMobile() {
+    const modals = document.querySelectorAll('.modal');
+    
+    modals.forEach(modal => {
+        // Empêcher le scroll du body quand une modale est ouverte
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+                    const isVisible = modal.style.display === 'flex' || modal.classList.contains('show');
+                    if (isVisible) {
+                        document.body.classList.add('no-scroll');
+                    } else {
+                        document.body.classList.remove('no-scroll');
+                    }
+                }
+            });
+        });
+        
+        observer.observe(modal, { attributes: true });
+        
+        // Fermer la modale en cliquant à l'extérieur
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+                modal.classList.remove('show');
+                document.body.classList.remove('no-scroll');
+            }
+        });
+        
+        // Fermer la modale avec Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.style.display === 'flex') {
+                modal.style.display = 'none';
+                modal.classList.remove('show');
+                document.body.classList.remove('no-scroll');
+            }
+        });
+    });
+}
+
+// Fonction pour optimiser les tableaux pour mobile
+function optimizeTablesForMobile() {
+    const tables = document.querySelectorAll('.articles-table');
+    
+    tables.forEach(table => {
+        // Créer une version mobile du tableau
+        if (window.innerWidth <= 768) {
+            convertTableToMobileCards(table);
+        }
+        
+        // Écouter les changements de taille d'écran
+        window.addEventListener('resize', () => {
+            if (window.innerWidth <= 768) {
+                convertTableToMobileCards(table);
+            } else {
+                restoreTableFromMobileCards(table);
+            }
+        });
+    });
+}
+
+// Fonction pour convertir un tableau en cartes mobiles
+function convertTableToMobileCards(table) {
+    if (table.dataset.converted === 'true') return;
+    
+    const tableContainer = table.closest('.articles-table-container');
+    if (!tableContainer) return;
+    
+    // Créer le conteneur des cartes mobiles
+    const mobileContainer = document.createElement('div');
+    mobileContainer.className = 'articles-table-mobile';
+    mobileContainer.style.display = 'block';
+    
+    // Cacher le tableau
+    table.style.display = 'none';
+    
+    // Récupérer les données du tableau
+    const rows = table.querySelectorAll('tbody tr');
+    
+    rows.forEach(row => {
+        const cells = row.querySelectorAll('td');
+        if (cells.length === 0) return;
+        
+        // Créer une carte mobile
+        const card = document.createElement('div');
+        card.className = 'article-table-row-mobile';
+        
+        // Extraire les données des cellules
+        const image = cells[0]?.querySelector('img')?.src || '';
+        const title = cells[1]?.querySelector('.article-title')?.textContent || '';
+        const author = cells[1]?.querySelector('.article-author')?.textContent || '';
+        const category = cells[2]?.querySelector('.category-badge')?.textContent || '';
+        const date = cells[3]?.textContent || '';
+        const views = cells[4]?.textContent || '';
+        const actions = cells[5]?.innerHTML || '';
+        
+        // Construire le HTML de la carte
+        card.innerHTML = `
+            <div class="article-mobile-header">
+                ${image ? `<img src="${image}" alt="${title}" class="article-mobile-thumbnail">` : ''}
+                <div class="article-mobile-info">
+                    <h3 class="article-mobile-title">${title}</h3>
+                    <p class="article-mobile-author">${author}</p>
+                </div>
+            </div>
+            <div class="article-mobile-meta">
+                <span class="article-mobile-category">${category}</span>
+                <span class="article-mobile-date">${date}</span>
+                <span class="article-mobile-views">${views}</span>
+            </div>
+            <div class="article-mobile-actions">
+                ${actions}
+            </div>
+        `;
+        
+        mobileContainer.appendChild(card);
+    });
+    
+    // Ajouter le conteneur mobile après le tableau
+    tableContainer.appendChild(mobileContainer);
+    table.dataset.converted = 'true';
+}
+
+// Fonction pour restaurer le tableau depuis les cartes mobiles
+function restoreTableFromMobileCards(table) {
+    const tableContainer = table.closest('.articles-table-container');
+    if (!tableContainer) return;
+    
+    const mobileContainer = tableContainer.querySelector('.articles-table-mobile');
+    if (mobileContainer) {
+        mobileContainer.remove();
+    }
+    
+    table.style.display = 'block';
+    table.dataset.converted = 'false';
+}
+
+// Fonction pour optimiser les onglets pour mobile
+function optimizeTabsForMobile() {
+    const tabs = document.querySelectorAll('.admin-tab');
+    
+    tabs.forEach(tab => {
+        tab.addEventListener('touchstart', function() {
+            this.style.transform = 'scale(0.98)';
+        });
+        
+        tab.addEventListener('touchend', function() {
+            this.style.transform = '';
+        });
+    });
+}
+
+// Exposer les fonctions mobiles globalement
+window.initializeMobileFeatures = initializeMobileFeatures;
+window.optimizeModalsForMobile = optimizeModalsForMobile;
+window.optimizeTablesForMobile = optimizeTablesForMobile;
+window.convertTableToMobileCards = convertTableToMobileCards;
+window.restoreTableFromMobileCards = restoreTableFromMobileCards;
